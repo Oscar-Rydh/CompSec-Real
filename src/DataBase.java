@@ -5,6 +5,10 @@ public class DataBase {
 	
 	public DataBase() {
 		records = new ArrayList<Record>();
+		
+		records.add(new Record("Göran", "Helen", "Stig", "Allergikliniken", "Nötallergi"));
+		records.add(new Record("Helmer", "Anna-Britta", "Kurt", "Fingeravdelningen", "Stukat finger"));
+		records.add(new Record("Anna", "Lars", "Greger", "Sjukdomskliniken", "Influensa"));
 	}
 	
 	public ArrayList<Record> getRecords(){
