@@ -43,6 +43,13 @@ public class client {
             	System.out.println("Enter personal number or path to keystore"); 
                 String user = reader.readLine();
                 File keystorepath = new File(user);
+
+
+                //same for truststore.. could be done automatically instead
+                System.out.println("Enter personal number or path to truststore"); 
+                String usertrust = reader.readLine();
+                File truststorepath = new File(usertrust);
+
                 char[] password;
                 System.out.println("Enter password: ");
                 try{
@@ -57,7 +64,7 @@ public class client {
                 TrustManagerFactory tmf = TrustManagerFactory.getInstance("SunX509");
                 SSLContext ctx = SSLContext.getInstance("TLS");
                 ks.load(new FileInputStream(keystorepath), password);  // keystore password (storepass)
-				ts.load(new FileInputStream("clienttruststore"), password); // truststore password (storepass);
+				ts.load(new FileInputStream(truststorepath), password); // truststore password (storepass);
 				kmf.init(ks, password); // user password (keypass)
 				tmf.init(ts); // keystore can be used as truststore here
 				ctx.init(kmf.getKeyManagers(), tmf.getTrustManagers(), null);
