@@ -66,17 +66,21 @@ public class server implements Runnable {
 				case "patient":
 					user = new Patient(database, subject);
 					break;
-
+				
+				case "government":
+					user = new Government(database, subject);
+					break;
 				}
 			
 				//Possible commands: getList, getRecord, createRecord
 				//command syntax
 				//getList: getList
-				//getRecord Doctor && Nurse: getRecord 'patient'
-				//getRecord Patient: getRecord 'patient':'Hospital Division'
-				//createRecord: createRecord "'patient':'nurse':'data'"
-				//modifyRecord Doctor:  modifyRecord 'patient':'nurse':'data' om ingen skillnad 'patient':-:'data'
-				//modifyRecord Nurse:  modifyRecord 'patient':'data' 
+				//getRecord Doctor && Nurse: 	getRecord 'patient'
+				//getRecord Patient: 			getRecord 'patient':'Hospital Division'
+				//createRecord: 				createRecord "'patient':'nurse':'data'"
+				//modifyRecord Doctor:  		modifyRecord 'patient':'nurse':'data' om ingen skillnad 'patient':-:'data'
+				//modifyRecord Nurse:  			modifyRecord 'patient':'data' 
+				//deleteRecord Gov: 			deleteRecord 'patient':'Hospital Division'
 				if (user != null) {
 					if (clientMsg.equals("getList")) {
 						out.println(user.getRecordListInfo());
@@ -95,6 +99,10 @@ public class server implements Runnable {
 					}else if(clientMsg.contains("modifyRecord")){
 						if(user instanceof Doctor || user instanceof Nurse){
 							user.modifyRecord(clientMsg);
+						}
+					}else if(clientMsg.contains("deleteRecord")){
+						if(user instanceof Government){
+							user.deleteRecord(clientMsg);
 						}
 					}
 				}

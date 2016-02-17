@@ -12,4 +12,8 @@ public abstract class User {
 	public void modifyRecord(String command){
 		
 	};
+	
+	public void deleteRecord(String command){
+		
+	}
 }

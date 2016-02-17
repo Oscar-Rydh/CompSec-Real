@@ -18,4 +18,9 @@ public class DataBase {
 	public void add(Record record) {
 		records.add(record);
 	}
+
+	public void remove(Record record) {
+		records.remove(record);
+		
+	}
 }

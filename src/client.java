@@ -1,3 +1,4 @@
+
 import java.net.*;
 import java.io.*;
 import javax.net.ssl.*;
@@ -36,13 +37,21 @@ public class client {
         try { /* set up a key manager for client authentication */
             SSLSocketFactory factory = null;
             try {
-                char[] password = "password".toCharArray();
+            	BufferedReader read = new BufferedReader(new InputStreamReader(System.in));
+                //Asks user for a personalnumber and a password to a specific keystore
+                System.out.println("Enter personal number or path to keystore"); 
+                String user = read.readLine();
+                File keystorepath = new File(user);
+                System.out.println("Enter password: ");
+                char[] password = read.readLine().toCharArray();
+                read.close();
+                
                 KeyStore ks = KeyStore.getInstance("JKS");
                 KeyStore ts = KeyStore.getInstance("JKS");
                 KeyManagerFactory kmf = KeyManagerFactory.getInstance("SunX509");
                 TrustManagerFactory tmf = TrustManagerFactory.getInstance("SunX509");
                 SSLContext ctx = SSLContext.getInstance("TLS");
-                ks.load(new FileInputStream("clientkeystore"), password);  // keystore password (storepass)
+                ks.load(new FileInputStream(keystorepath), password);  // keystore password (storepass)
 				ts.load(new FileInputStream("clienttruststore"), password); // truststore password (storepass);
 				kmf.init(ks, password); // user password (keypass)
 				tmf.init(ts); // keystore can be used as truststore here
