@@ -8,7 +8,7 @@ public class DataBase {
 		// Patient: Nurse: Doctor: Hospital Division: Data 
 		records.add(new Record("Goran", "Helen", "Stig", "Allergikliniken", "Notallergi"));
 		records.add(new Record("Helmer", "Anna-Britta", "Kurt", "Fingeravdelningen", "Stukat finger"));
-		records.add(new Record("Anna", "Lars", "123123", "Sjukdomskliniken", "Influensa"));
+		records.add(new Record("Anna", "Lars", "123123", "jdfsjhkdfskj", "Influensa"));
 
 	}
 

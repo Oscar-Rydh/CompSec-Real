@@ -14,9 +14,9 @@ public class Nurse extends User {
 		
 		for(Record r : database.getRecords()){
 			if(r.getNurse().equals(name)){
-				sb.append("Patient: " + r.getPatient() + ": r+w");
+				sb.append("\tPatient: " + r.getPatient() + ": r+w");
 			}else if(r.getHospitalDivision().equals(hospitalDivision)){
-				sb.append("Patient: " + r.getPatient() + ": r");
+				sb.append("\tPatient: " + r.getPatient() + ": r");
 			}
 		}
 		if(sb.length() == 0){
@@ -27,14 +27,14 @@ public class Nurse extends User {
 	
 	// Expected command: getRecord 'Record name'
 	public String getRecord(String recordName) {
-		recordName = recordName.substring(0, recordName.indexOf(" "));
+		recordName = recordName.substring(recordName.indexOf(" ") + 1);
 		for(Record r : database.getRecords()){
 			if(r.getPatient().equals(recordName) && r.getHospitalDivision().equals(hospitalDivision)){
 				return 	"Patient: " + r.getPatient() +
-						"Nurse: " + r.getNurse() +
-						"Doctor: " + r.getDoctor() +
-						"Hospital Division: " + r.getHospitalDivision() +
-						"Medical Data: " + r.getMedicalData();
+						"\tNurse: " + r.getNurse() +
+						"\tDoctor: " + r.getDoctor() +
+						"\tHospital Division: " + r.getHospitalDivision() +
+						"\tMedical Data: " + r.getMedicalData();
 			}
 		}
 		return "Record not found.";
@@ -42,7 +42,7 @@ public class Nurse extends User {
 	
 	// modifyRecord 'patient':'data' 
 	public String modifyRecord(String command){
-		command.substring(0, command.indexOf(" "));
+		command = command.substring(command.indexOf(" ") + 1);
 		String[] args = command.split(":");
 		String patient = args[0];
 		String data = args[1];

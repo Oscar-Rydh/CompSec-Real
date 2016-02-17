@@ -24,16 +24,20 @@ public class server implements Runnable {
 			X509Certificate cert = (X509Certificate) session.getPeerCertificateChain()[0];
 			String subject = cert.getSubjectDN().getName();
 			System.out.println("Subject = " + subject);
+
+			String name = subject.substring(3, subject.indexOf(","));
+			subject = subject.substring(subject.indexOf("OU=") + 3);
+			String hospitalDivision = subject.substring(0, subject.indexOf(","));
+			subject = subject.substring(subject.indexOf("O=") + 2);
+			String occupation = subject.substring(0, subject.indexOf(","));
+
+			System.out.println("name: " + name);
+			System.out.println("div: " + hospitalDivision);
+			System.out.println("occ: " + occupation);
+
 			String issuer = cert.getIssuerDN().getName();
 			System.out.println("Issuer = " + issuer);
 			String serial = cert.getSerialNumber().toString();
-			String name = null;
-			String division = null;
-			if(subject.contains(":")){
-				String[] array = subject.split(":");
-				name = array[0];
-				division = array[1];
-			}
 			numConnectedClients++;
 			System.out.println("client connected");
 			System.out.println("client name (cert subject DN field): " + subject);
@@ -48,65 +52,83 @@ public class server implements Runnable {
 
 			String clientMsg = null;
 			while ((clientMsg = in.readLine()) != null) {
-				String rev = new StringBuilder(clientMsg).reverse().toString();
-				System.out.println("received '" + clientMsg + "' from client");
-				System.out.println("Current Certificate user: " + subject + "\n");
-				System.out.print("sending '" + rev + "' to client...");
-
+				System.out.println("CLIENTMESSAGE IS: " + clientMsg);
 				User user = null;
-				switch (issuer.toLowerCase()) {
+				switch (occupation.toLowerCase()) {
 				case "doctor":
-					user = new Doctor(database, name, division);
+					user = new Doctor(database, name, hospitalDivision);
 					break;
 
 				case "nurse":
-					user = new Nurse(database, name, division);
+					user = new Nurse(database, name, hospitalDivision);
 					break;
 
 				case "patient":
-					user = new Patient(database, subject);
+					user = new Patient(database, name);
 					break;
-				
+
 				case "government":
-					user = new Government(database, subject);
+					user = new Government(database, name);
 					break;
 				}
-			
-				//Possible commands: getList, getRecord, createRecord
-				//command syntax
-				//getList: getList
-				//getRecord Doctor && Nurse: 	getRecord 'patient'
-				//getRecord Patient: 			getRecord 'patient':'Hospital Division'
-				//createRecord: 				createRecord "'patient':'nurse':'data'"
-				//modifyRecord Doctor:  		modifyRecord 'patient':'nurse':'data' om ingen skillnad 'patient':-:'data'
-				//modifyRecord Nurse:  			modifyRecord 'patient':'data' 
-				//deleteRecord Gov: 			deleteRecord 'patient':'Hospital Division'
+
+				// Possible commands: getList, getRecord, createRecord
+				// command syntax
+				// getList: getList
+				// getRecord Doctor && Nurse: getRecord 'patient'
+				// getRecord Patient && Government: getRecord 'patient':'Hospital Division'
+				// createRecord: createRecord "'patient':'nurse':'data'"
+				// modifyRecord Doctor: modifyRecord 'patient':'nurse':'data' om
+				// ingen skillnad 'patient':-:'data'
+				// modifyRecord Nurse: modifyRecord 'patient':'data'
+				// deleteRecord Gov: deleteRecord 'patient':'Hospital Division'
+				int counter = 0;
+				for (int i = 0; i < clientMsg.length(); i++) {
+					if (clientMsg.charAt(i) == ':') {
+						counter++;
+					}
+				}
+
 				if (user != null) {
 					if (clientMsg.equals("getList")) {
 						out.println(user.getRecordListInfo());
 						System.out.println("List info sent to client");
 					} else if (clientMsg.contains("getRecord")) {
-						out.println(user.getRecord(clientMsg));
-						System.out.println("Patient record sent to client");
-					}else if(clientMsg.contains("createRecord")){
-						if(user instanceof Doctor){
-							user.createRecord(clientMsg);
-							System.out.println("New record created");
-							out.println("New record created");
+						if((user instanceof Patient || user instanceof Government) && counter != 1){
+							out.println("Invalid argument");
 						}else{
+							out.println(user.getRecord(clientMsg));
+							System.out.println("Patient record sent to client");	
+						}
+					} else if (clientMsg.contains("createRecord")) {
+						if (user instanceof Doctor) {
+							if(counter == 2){
+								user.createRecord(clientMsg);
+								System.out.println("New record created");
+								out.println("New record created");
+							}else {
+								out.println("Invalid argument");
+							}
+						} else {
 							out.println("Only Doctors can create Records!!");
 						}
-					}else if(clientMsg.contains("modifyRecord")){
-						if(user instanceof Doctor || user instanceof Nurse){
+					} else if (clientMsg.contains("modifyRecord")) {
+						if ((user instanceof Doctor || user instanceof Nurse) && counter == 2) {
 							out.println(user.modifyRecord(clientMsg));
+						} else {
+							out.println("Invalid argument");
 						}
-					}else if(clientMsg.contains("deleteRecord")){
-						if(user instanceof Government){
+					} else if (clientMsg.contains("deleteRecord")) {
+						if (user instanceof Government && counter == 1) {
 							out.println(user.deleteRecord(clientMsg));
+						}else {
+							out.println("Invalid argument");
 						}
+					} else {
+						out.println("Something went wrong! Command sent: " + clientMsg);
+						System.out.println("Något gick fel");
 					}
 				}
-				out.println("Something went wrong! Command sent: " + clientMsg);
 				out.flush();
 				System.out.println("done\n");
 			}

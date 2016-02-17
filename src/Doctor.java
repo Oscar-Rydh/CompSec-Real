@@ -27,14 +27,15 @@ public class Doctor extends User {
 	
 	// Expected command: getRecord 'Record name'
 	public String getRecord(String recordName) {
-		recordName = recordName.substring(0, recordName.indexOf(" "));
+		recordName = recordName.substring(recordName.indexOf(" ") + 1);
 		for(Record r : database.getRecords()){
-			if(r.getPatient().equals(recordName) && r.getHospitalDivision().equals(hospitalDivision)){
+			if(r.getPatient().equals(recordName) && r.getDoctor().equals(name) ||
+					r.getPatient().equals(recordName) && r.getHospitalDivision().equals(hospitalDivision)){
 				return 	"Patient: " + r.getPatient() +
-						"Nurse: " + r.getNurse() +
-						"Doctor: " + r.getDoctor() +
-						"Hospital Division: " + r.getHospitalDivision() +
-						"Medical Data: " + r.getMedicalData();
+						"\tNurse: " + r.getNurse() +
+						"\tDoctor: " + r.getDoctor() +
+						"\tHospital Division: " + r.getHospitalDivision() +
+						"\tMedical Data: " + r.getMedicalData();
 			}
 		}
 		return "Record not found.";
@@ -42,7 +43,7 @@ public class Doctor extends User {
 	
 	//Expected command: createRecord "'patient':'nurse':'data'"
 	public String createRecord(String command){
-		command.substring(0, command.indexOf(" "));
+		command = command.substring(command.indexOf(" ") + 1);
 		String[] args = command.split(":");
 		String patient = args[0];
 		String nurse = args[1];
@@ -53,7 +54,7 @@ public class Doctor extends User {
 	
 	// modifyRecord 'patient':'nurse':'data' om ingen skillnad 'patient':-:'data'
 	public String modifyRecord(String command){
-		command.substring(0, command.indexOf(" "));
+		command = command.substring(command.indexOf(" ") + 1);
 		String[] args = command.split(":");
 		String patient = args[0];
 		String nurse = args[1];
