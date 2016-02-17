@@ -1,4 +1,3 @@
-
 import java.net.*;
 import java.io.*;
 import javax.net.ssl.*;
@@ -37,14 +36,20 @@ public class client {
         try { /* set up a key manager for client authentication */
             SSLSocketFactory factory = null;
             try {
-            	BufferedReader read = new BufferedReader(new InputStreamReader(System.in));
-                //Asks user for a personalnumber and a password to a specific keystore
-                System.out.println("Enter personal number or path to keystore"); 
-                String user = read.readLine();
+            
+            	BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+            	//Asks user for a personalnumber and a password to a specific keystore
+            	Console cons = System.console();
+            	System.out.println("Enter personal number or path to keystore"); 
+                String user = reader.readLine();
                 File keystorepath = new File(user);
+                char[] password;
                 System.out.println("Enter password: ");
-                char[] password = read.readLine().toCharArray();
-                read.close();
+                try{
+                	password = cons.readPassword();
+                }catch(Exception e){
+                	password = reader.readLine().toCharArray();
+                }
                 
                 KeyStore ks = KeyStore.getInstance("JKS");
                 KeyStore ts = KeyStore.getInstance("JKS");
