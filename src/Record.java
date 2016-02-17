@@ -1,17 +1,17 @@
 
 public class Record {
-	private String name, nurse, doctor, hospitalDivision, medicalData;
+	private String patient, nurse, doctor, hospitalDivision, medicalData;
 	
-	public Record(String name, String nurse, String doctor, String hospitalDivision, String medicalData){
-		this.name = name;
+	public Record(String patient, String nurse, String doctor, String hospitalDivision, String medicalData){
+		this.patient = patient;
 		this.nurse = nurse;
 		this.doctor = doctor;
 		this.hospitalDivision = hospitalDivision;
 		this.medicalData = medicalData;
 	}
 	
-	public String getName() {
-		return name;
+	public String getPatient() {
+		return patient;
 	}
 
 	public String getNurse() {
@@ -28,6 +28,15 @@ public class Record {
 
 	public String getMedicalData() {
 		return medicalData;
+	}
+
+	public void setNurse(String nurse) {
+		this.nurse = nurse;
+		
+	}
+
+	public void setData(String data) {
+		medicalData = data;
 	}
 
 }

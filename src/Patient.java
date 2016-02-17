@@ -1,5 +1,5 @@
 
-public class Patient implements User {
+public class Patient extends User {
 	private String name;
 	private DataBase database;
 
@@ -7,20 +7,34 @@ public class Patient implements User {
 		this.name = name;
 		this.database = database;
 	}
-
+	// Expected command: getList
 	public String getRecordListInfo() {
 		StringBuilder sb = new StringBuilder();
 		
 		for(Record r : database.getRecords()){
-			//TODO Print only parts that this class have access to.
-			sb.append(r.getName() + "Other stuff here" + "\n");
+			if(r.getPatient().equals(name)){
+				sb.append("Patient: " + r.getPatient() + ": r");
+			}
 		}
-		
 		return sb.toString();
 	}
-
-	public String getRecord(String recordName) {
-
-		return null;
+	
+	// Expected command: getRecord 'Record name':'Hospital Division'
+	public String getRecord(String command) {
+		command = command.substring(0, command.indexOf(" "));
+		String[] args = command.split(":");
+		String patient = args[0];
+		String hospitalDivision = args[1];
+		
+		for(Record r : database.getRecords()){
+			if(r.getPatient().equals(patient) && r.getHospitalDivision().equals(hospitalDivision)){
+				return 	"Patient: " + r.getPatient() +
+						"Nurse: " + r.getNurse() +
+						"Doctor: " + r.getDoctor() +
+						"Hospital Division: " + r.getHospitalDivision() +
+						"Medical Data: " + r.getMedicalData();
+			}
+		}
+		return "Record not found.";
 	}
 }
