@@ -19,6 +19,9 @@ public class Nurse extends User {
 				sb.append("Patient: " + r.getPatient() + ": r");
 			}
 		}
+		if(sb.length() == 0){
+			sb.append("No data found");
+		}
 		return sb.toString();
 	}
 	
@@ -38,7 +41,7 @@ public class Nurse extends User {
 	}
 	
 	// modifyRecord 'patient':'data' 
-	public void modifyRecord(String command){
+	public String modifyRecord(String command){
 		command.substring(0, command.indexOf(" "));
 		String[] args = command.split(":");
 		String patient = args[0];
@@ -48,9 +51,10 @@ public class Nurse extends User {
 			if(patient != null && r.getPatient().equals(patient) && r.getNurse().equals(name)){
 				if(!data.equals("-")){
 					r.setData(data);
-					
+					return "Record modified";
 				}
 			}
 		}
+		return "Record not found";
 	}
 }

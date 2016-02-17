@@ -19,6 +19,9 @@ public class Doctor extends User {
 				sb.append("Patient: " + r.getPatient() + ": r");
 			}
 		}
+		if(sb.length() == 0){
+			sb.append("No data found");
+		}
 		return sb.toString();
 	}
 	
@@ -38,33 +41,39 @@ public class Doctor extends User {
 	}
 	
 	//Expected command: createRecord "'patient':'nurse':'data'"
-	public void createRecord(String command){
+	public String createRecord(String command){
 		command.substring(0, command.indexOf(" "));
 		String[] args = command.split(":");
 		String patient = args[0];
 		String nurse = args[1];
 		String data = args[2];
 		database.add(new Record(patient, nurse, name, hospitalDivision, data));
+		return "Record Created";
 	}
 	
 	// modifyRecord 'patient':'nurse':'data' om ingen skillnad 'patient':-:'data'
-	public void modifyRecord(String command){
+	public String modifyRecord(String command){
 		command.substring(0, command.indexOf(" "));
 		String[] args = command.split(":");
 		String patient = args[0];
 		String nurse = args[1];
 		String data = args[2];
-		
+		int modified = 0;
 		for(Record r: database.getRecords()){
 			if(patient != null && r.getPatient().equals(patient) && r.getDoctor().equals(name)){
 				if(!nurse.equals("-")){
 					r.setNurse(nurse);
+					modified++;
 				}
 				if(!data.equals("-")){
 					r.setData(data);
-					
+					modified++;
 				}
 			}
 		}
+		if(modified >= 1){
+			return "Record modfied";
+		}
+			return "Something went wrong";
 	}
 }

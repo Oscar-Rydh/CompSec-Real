@@ -5,7 +5,7 @@ public class DataBase {
 
 	public DataBase() {
 		records = new ArrayList<Record>();
-
+		// Patient: Nurse: Doctor: Hospital Division: Data 
 		records.add(new Record("Goran", "Helen", "Stig", "Allergikliniken", "Notallergi"));
 		records.add(new Record("Helmer", "Anna-Britta", "Kurt", "Fingeravdelningen", "Stukat finger"));
 		records.add(new Record("Anna", "Lars", "Greger", "Sjukdomskliniken", "Influensa"));

@@ -15,6 +15,9 @@ public class Government extends User {
 		for (Record r : database.getRecords()) {
 			sb.append("Patient: " + r.getPatient() + ": r+delete");
 		}
+		if(sb.length() == 0){
+			sb.append("No data found");
+		}
 		return sb.toString();
 	}
 
@@ -38,7 +41,7 @@ public class Government extends User {
 		}
 
 	// Expected command: deleteRecord 'Record name':'Hospital Division'
-	public void deleteRecord(String command){
+	public String deleteRecord(String command){
 		command = command.substring(0, command.indexOf(" "));
 		String[] args = command.split(":");
 		String patient = args[0];
@@ -47,7 +50,9 @@ public class Government extends User {
 		for(Record r : database.getRecords()){
 			if(r.getPatient().equals(patient) && r.getHospitalDivision().equals(hospitalDivision)){
 				database.remove(r);
+				return "Record Removed";
 			}
 		}
+		return "Record not found";
 	}
 }

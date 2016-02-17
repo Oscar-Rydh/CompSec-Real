@@ -16,6 +16,9 @@ public class Patient extends User {
 				sb.append("Patient: " + r.getPatient() + ": r");
 			}
 		}
+		if(sb.length() == 0){
+			sb.append("No data found");
+		}
 		return sb.toString();
 	}
 	

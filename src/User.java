@@ -5,15 +5,15 @@ public abstract class User {
 	
 	public abstract String getRecord(String recordName);
 	
-	public void createRecord(String command){
-		
+	public String createRecord(String command){
+		return "This Command is not possible for this user";
 	};
 	
-	public void modifyRecord(String command){
-		
+	public String modifyRecord(String command){
+		return "This Command is not possible for this user";
 	};
 	
-	public void deleteRecord(String command){
-		
+	public String deleteRecord(String command){
+		return "This Command is not possible for this user";
 	}
 }

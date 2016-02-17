@@ -98,11 +98,11 @@ public class server implements Runnable {
 						}
 					}else if(clientMsg.contains("modifyRecord")){
 						if(user instanceof Doctor || user instanceof Nurse){
-							user.modifyRecord(clientMsg);
+							out.println(user.modifyRecord(clientMsg));
 						}
 					}else if(clientMsg.contains("deleteRecord")){
 						if(user instanceof Government){
-							user.deleteRecord(clientMsg);
+							out.println(user.deleteRecord(clientMsg));
 						}
 					}
 				}
