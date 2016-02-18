@@ -16,4 +16,5 @@ public abstract class User {
 	public String deleteRecord(String command){
 		return "This Command is not possible for this user";
 	}
+	public abstract String getPossibleCommands(); 
 }

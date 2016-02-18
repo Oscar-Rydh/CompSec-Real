@@ -55,4 +55,11 @@ public class Government extends User {
 		}
 		return "Record not found";
 	}
+	public String getPossibleCommands() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("getList; Returns a list of accsessible recrods with read/wright permissions\t");
+		sb.append("getRecord 'Record name'; Returns a list of accsessible recrods with read/wright permissions\t");
+		sb.append("deleteRecord 'Record name':Hospital Division'; Deletes the record corresponding to the record name and hospital division\t");
+		return sb.toString();
+	}
 }

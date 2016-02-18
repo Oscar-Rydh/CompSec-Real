@@ -49,7 +49,7 @@ public class server implements Runnable {
 			BufferedReader in = null;
 			out = new PrintWriter(socket.getOutputStream(), true);
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
+			
 			String clientMsg = null;
 			while ((clientMsg = in.readLine()) != null) {
 				System.out.println("CLIENTMESSAGE IS: " + clientMsg);
@@ -90,7 +90,9 @@ public class server implements Runnable {
 				}
 
 				if (user != null) {
-					if (clientMsg.equals("getList")) {
+					if(clientMsg.equals("help")){
+						out.println("Possible commands: " + user.getPossibleCommands());
+					}else if (clientMsg.equals("getList")) {
 						out.println(user.getRecordListInfo());
 						System.out.println("List info sent to client");
 					} else if (clientMsg.contains("getRecord")) {

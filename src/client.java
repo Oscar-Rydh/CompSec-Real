@@ -93,7 +93,7 @@ public class client {
             System.out.println("Serial number: " + serial);
             System.out.println("socket after handshake:\n" + socket + "\n");
             System.out.println("secure connection established\n\n");
-
+            System.out.println("If first time user, use: 'help' to get possible commands for logged in user!");
             BufferedReader read = new BufferedReader(new InputStreamReader(System.in));
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));

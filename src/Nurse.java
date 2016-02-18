@@ -57,4 +57,11 @@ public class Nurse extends User {
 		}
 		return "Record not found";
 	}
+	public String getPossibleCommands() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("getList; Returns a list of accsessible recrods with read/wright permissions\t");
+		sb.append("getRecord 'Record name'; Returns a list of accsessible recrods with read/wright permissions\t");
+		sb.append("modifyRecord 'Patient':'Nurse':'data'; Edits the data in entered fields. Use '-' if no edit is wanted. Notice that ':' is required!!\t");
+		return sb.toString();
+	}
 }

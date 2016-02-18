@@ -40,4 +40,10 @@ public class Patient extends User {
 		}
 		return "Record not found.";
 	}
+	public String getPossibleCommands() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("getList; Returns a list of accsessible recrods with read permissions\t");
+		sb.append("getRecord 'Record name'; Returns the specified record\t");
+		return sb.toString();
+	}
 }

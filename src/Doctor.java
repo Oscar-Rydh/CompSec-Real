@@ -77,4 +77,13 @@ public class Doctor extends User {
 		}
 			return "Something went wrong";
 	}
+	@Override
+	public String getPossibleCommands() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("getList; Returns a list of accsessible recrods with read/wright permissions\t");
+		sb.append("getRecord 'Record name'; Returns a list of accsessible recrods with read/wright permissions\t");
+		sb.append("createRecord 'Patient':'Nurse':'data'; Creates a new Record with entered data. Notice that ':' is required!!\t");
+		sb.append("modifyRecord 'Patient':'Nurse':'data'; Edits the data in entered fields. Use '-' if no edit is wanted. Notice that ':' is required!!\t");
+		return sb.toString();
+	}
 }
