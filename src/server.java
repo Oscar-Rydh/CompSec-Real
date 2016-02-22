@@ -9,11 +9,13 @@ public class server implements Runnable {
 	private ServerSocket serverSocket = null;
 	private static int numConnectedClients = 0;
 	private DataBase database;
+	private Log log;
 
 	public server(ServerSocket ss) throws IOException {
 		serverSocket = ss;
 		newListener();
 		database = new DataBase();
+		log = new Log();
 	}
 
 	public void run() {
@@ -56,19 +58,19 @@ public class server implements Runnable {
 				User user = null;
 				switch (occupation.toLowerCase()) {
 				case "doctor":
-					user = new Doctor(database, name, hospitalDivision);
+					user = new Doctor(database, name, hospitalDivision, log);
 					break;
 
 				case "nurse":
-					user = new Nurse(database, name, hospitalDivision);
+					user = new Nurse(database, name, hospitalDivision, log);
 					break;
 
 				case "patient":
-					user = new Patient(database, name);
+					user = new Patient(database, name, log);
 					break;
 
 				case "government":
-					user = new Government(database, name);
+					user = new Government(database, name, log);
 					break;
 				}
 
@@ -97,6 +99,7 @@ public class server implements Runnable {
 						System.out.println("List info sent to client");
 					} else if (clientMsg.contains("getRecord")) {
 						if((user instanceof Patient || user instanceof Government) && counter != 1){
+							user.unavailibleCommand(clientMsg);
 							out.println("Invalid argument");
 						}else{
 							out.println(user.getRecord(clientMsg));
@@ -109,25 +112,30 @@ public class server implements Runnable {
 								System.out.println("New record created");
 								out.println("New record created");
 							}else {
+								user.unavailibleCommand(clientMsg);
 								out.println("Invalid argument");
 							}
 						} else {
+							user.unavailibleCommand(clientMsg);
 							out.println("Only Doctors can create Records!!");
 						}
 					} else if (clientMsg.contains("modifyRecord")) {
 						if ((user instanceof Doctor || user instanceof Nurse) && counter == 2) {
 							out.println(user.modifyRecord(clientMsg));
 						} else {
+							user.unavailibleCommand(clientMsg);
 							out.println("Invalid argument");
 						}
 					} else if (clientMsg.contains("deleteRecord")) {
 						if (user instanceof Government && counter == 1) {
 							out.println(user.deleteRecord(clientMsg));
 						}else {
+							user.unavailibleCommand(clientMsg);
 							out.println("Invalid argument");
 						}
 					} else {
 						out.println("Something went wrong! Command sent: " + clientMsg);
+						user.unavailibleCommand(clientMsg);
 						System.out.println("Något gick fel");
 					}
 				}

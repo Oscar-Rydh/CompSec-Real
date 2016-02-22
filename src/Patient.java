@@ -2,10 +2,13 @@
 public class Patient extends User {
 	private String name;
 	private DataBase database;
+	private Log log;
 
-	public Patient(DataBase database, String name) {
+	public Patient(DataBase database, String name, Log log) {
 		this.name = name;
 		this.database = database;
+		this.log = log;
+		log.write("Patient: " + name + " successfully logged in.");
 	}
 	// Expected command: getList
 	public String getRecordListInfo() {
@@ -19,6 +22,7 @@ public class Patient extends User {
 		if(sb.length() == 0){
 			sb.append("No data found");
 		}
+		log.write("Patient: " + name + " requested his/her record list.");
 		return sb.toString();
 	}
 	
@@ -31,6 +35,7 @@ public class Patient extends User {
 		
 		for(Record r : database.getRecords()){
 			if(r.getPatient().equals(patient) && r.getHospitalDivision().equals(hospitalDivision)){
+				log.write("Patient: " + name + " recieved his/her record of " + hospitalDivision);
 				return 	"Patient: " + r.getPatient() +
 						"\tNurse: " + r.getNurse() +
 						"\tDoctor: " + r.getDoctor() +
@@ -38,12 +43,18 @@ public class Patient extends User {
 						"\tMedical Data: " + r.getMedicalData();
 			}
 		}
+		log.write("Patient: " + name + " requested his/her record of " + hospitalDivision + ", but was not found.");
 		return "Record not found.";
 	}
 	public String getPossibleCommands() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("getList; Returns a list of accsessible recrods with read permissions\t");
 		sb.append("getRecord 'Record name'; Returns the specified record\t");
+		log.write("Patient: " + name + " requested a list of the availible commands.");
 		return sb.toString();
+	}
+	
+	public void unavailibleCommand(String command) {
+		log.write("Patient: " + name + " sent an unimplemented command: " + command);
 	}
 }

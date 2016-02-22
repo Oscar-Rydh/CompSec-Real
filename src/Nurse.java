@@ -2,11 +2,14 @@
 public class Nurse extends User {
 	private String name, hospitalDivision;
 	private DataBase database;
+	private Log log;
 
-	public Nurse(DataBase database, String name, String hospitalDivision) {
+	public Nurse(DataBase database, String name, String hospitalDivision, Log log) {
 		this.name = name;
 		this.database = database;
 		this.hospitalDivision = hospitalDivision;
+		this.log = log;
+		log.write("Nurse: " + name + " of " + hospitalDivision + " successfully logged in.");
 	}
 	// Expected command: getList
 	public String getRecordListInfo() {
@@ -22,6 +25,7 @@ public class Nurse extends User {
 		if(sb.length() == 0){
 			sb.append("No data found");
 		}
+		log.write("Nurse: " + name + " of " + hospitalDivision + " requested the record list.");
 		return sb.toString();
 	}
 	
@@ -30,6 +34,7 @@ public class Nurse extends User {
 		recordName = recordName.substring(recordName.indexOf(" ") + 1);
 		for(Record r : database.getRecords()){
 			if(r.getPatient().equals(recordName) && r.getHospitalDivision().equals(hospitalDivision)){
+				log.write("Nurse: " + name + " of " + hospitalDivision + " recieved record of Patient: " + recordName);
 				return 	"Patient: " + r.getPatient() +
 						"\tNurse: " + r.getNurse() +
 						"\tDoctor: " + r.getDoctor() +
@@ -37,6 +42,7 @@ public class Nurse extends User {
 						"\tMedical Data: " + r.getMedicalData();
 			}
 		}
+		log.write("Nurse: " + name + " of " + hospitalDivision + " requested record of Patient: " + recordName + ", but was not found.");
 		return "Record not found.";
 	}
 	
@@ -51,10 +57,12 @@ public class Nurse extends User {
 			if(patient != null && r.getPatient().equals(patient) && r.getNurse().equals(name)){
 				if(!data.equals("-")){
 					r.setData(data);
+					log.write("Nurse: " + name + " of " + hospitalDivision + " modified record of Patient: " + patient + " with Medical Data: " + data);
 					return "Record modified";
 				}
 			}
 		}
+		log.write("Nurse: " + name + " of " + hospitalDivision + " tried to modify record of Patient: " + patient + " but something went wrong.");	
 		return "Record not found";
 	}
 	public String getPossibleCommands() {
@@ -62,6 +70,11 @@ public class Nurse extends User {
 		sb.append("getList; Returns a list of accsessible recrods with read/wright permissions\t");
 		sb.append("getRecord 'Record name'; Returns a list of accsessible recrods with read/wright permissions\t");
 		sb.append("modifyRecord 'Patient':'Nurse':'data'; Edits the data in entered fields. Use '-' if no edit is wanted. Notice that ':' is required!!\t");
+		log.write("Nurse: " + name + " of " + hospitalDivision + " requested a list of the availible commands.");
 		return sb.toString();
+	}
+	
+	public void unavailibleCommand(String command) {
+		log.write("Nurse: " + name + " of " + hospitalDivision + " sent an unimplemented command: " + command);
 	}
 }
