@@ -4,11 +4,13 @@ public class Patient extends User {
 	private DataBase database;
 	private Log log;
 
-	public Patient(DataBase database, String name, Log log) {
+	public Patient(DataBase database, String name, Log log, boolean firstTimeCreateLog) {
 		this.name = name;
 		this.database = database;
 		this.log = log;
-		log.write("Patient: " + name + " successfully logged in.");
+		if(firstTimeCreateLog){
+			log.write("Patient: " + name + " successfully logged in.");
+		}
 	}
 	// Expected command: getList
 	public String getRecordListInfo() {

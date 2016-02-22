@@ -4,11 +4,13 @@ public class Government extends User {
 	private DataBase database;
 	private Log log;
 
-	public Government(DataBase database, String name, Log log) {
+	public Government(DataBase database, String name, Log log, boolean firstTimeCreateLog) {
 		this.name = name;
 		this.database = database;
 		this.log = log;
-		log.write("Government user: " + name + " successfully logged in.");
+		if(firstTimeCreateLog){
+			log.write("Government user: " + name + " successfully logged in.");
+		}
 	}
 
 	// Expected command: getList

@@ -10,6 +10,7 @@ public class server implements Runnable {
 	private static int numConnectedClients = 0;
 	private DataBase database;
 	private Log log;
+	private boolean firstTimeCreateLog = true;
 
 	public server(ServerSocket ss) throws IOException {
 		serverSocket = ss;
@@ -58,21 +59,22 @@ public class server implements Runnable {
 				User user = null;
 				switch (occupation.toLowerCase()) {
 				case "doctor":
-					user = new Doctor(database, name, hospitalDivision, log);
+					user = new Doctor(database, name, hospitalDivision, log, firstTimeCreateLog);
 					break;
 
 				case "nurse":
-					user = new Nurse(database, name, hospitalDivision, log);
+					user = new Nurse(database, name, hospitalDivision, log, firstTimeCreateLog);
 					break;
 
 				case "patient":
-					user = new Patient(database, name, log);
+					user = new Patient(database, name, log, firstTimeCreateLog);
 					break;
 
 				case "government":
-					user = new Government(database, name, log);
+					user = new Government(database, name, log, firstTimeCreateLog);
 					break;
 				}
+				firstTimeCreateLog = false;
 
 				// Possible commands: getList, getRecord, createRecord
 				// command syntax
