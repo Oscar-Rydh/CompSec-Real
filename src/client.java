@@ -16,6 +16,9 @@ import java.security.cert.*;
 public class client {
 
     public static void main(String[] args) throws Exception {
+
+
+
         String host = null;
         int port = -1;
         for (int i = 0; i < args.length; i++) {
@@ -35,20 +38,20 @@ public class client {
 
         try { /* set up a key manager for client authentication */
             SSLSocketFactory factory = null;
+           
+
+           boolean passwordCheck = false;
+
+            while (!passwordCheck) {
+
             try {
             
             	BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
             	//Asks user for a personalnumber and a password to a specific keystore
             	Console cons = System.console();
-            	System.out.println("Enter personal number or path to keystore"); 
+            	System.out.println("Enter path to keystore: "); 
                 String user = reader.readLine();
                 File keystorepath = new File(user);
-
-
-                //same for truststore.. could be done automatically instead
-                System.out.println("Enter personal number or path to truststore"); 
-                String usertrust = reader.readLine();
-                File truststorepath = new File(usertrust);
 
                 char[] password;
                 System.out.println("Enter password: ");
@@ -64,14 +67,20 @@ public class client {
                 TrustManagerFactory tmf = TrustManagerFactory.getInstance("SunX509");
                 SSLContext ctx = SSLContext.getInstance("TLS");
                 ks.load(new FileInputStream(keystorepath), password);  // keystore password (storepass)
-				ts.load(new FileInputStream(truststorepath), password); // truststore password (storepass);
+				ts.load(new FileInputStream("ClientSideTrustStore"), "password".toCharArray()); // truststore password (storepass);
 				kmf.init(ks, password); // user password (keypass)
 				tmf.init(ts); // keystore can be used as truststore here
 				ctx.init(kmf.getKeyManagers(), tmf.getTrustManagers(), null);
                 factory = ctx.getSocketFactory();
+
+                passwordCheck = true;
+
             } catch (Exception e) {
-                throw new IOException(e.getMessage());
+                System.out.println("Wrong password or keystore path");
             }
+
+        } //while loop ends here
+
             SSLSocket socket = (SSLSocket)factory.createSocket(host, port);
             System.out.println("\nsocket before handshake:\n" + socket + "\n");
 
