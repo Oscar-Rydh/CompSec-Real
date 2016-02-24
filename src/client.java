@@ -1,9 +1,18 @@
-import java.net.*;
-import java.io.*;
-import javax.net.ssl.*;
-import javax.security.cert.X509Certificate;
+import java.io.BufferedReader;
+import java.io.Console;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.security.KeyStore;
-import java.security.cert.*;
+
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.SSLSocket;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManagerFactory;
+import javax.security.cert.X509Certificate;
 
 /*
  * This example shows how to set up a key manager to perform client
@@ -49,7 +58,7 @@ public class client {
             	BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
             	//Asks user for a personalnumber and a password to a specific keystore
             	Console cons = System.console();
-            	System.out.println("Enter path to keystore: "); 
+            	System.out.println("Enter entire path to keystore: "); 
                 String user = reader.readLine();
                 File keystorepath = new File(user);
 

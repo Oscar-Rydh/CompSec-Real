@@ -1,0 +1,2 @@
+2016-02-24 12:14:03 - Doctor: Kurt of fingeravdelningen successfully logged in.
+2016-02-24 12:14:03 - Doctor: Kurt of fingeravdelningen requested a list of the availible commands.
