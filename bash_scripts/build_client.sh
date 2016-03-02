@@ -12,6 +12,16 @@ TS="RegeringTrustStore"
 #keytool -import -trustcacerts -alias root -file CA.crt -keystore $TS
 
 
+
+printf " \n\n\n\n\n\n  This scripts helps you create a client. "
+
+function pause(){
+ read -n1 -rsp $'   Press any key to continue or Ctrl+C to exit...\n\n\n'
+}
+
+pause
+
+
 #3
 #echo "create clientkeystore with key pair CLIENT"
 printf "\n\n ----- create clientkeystore with key pair CLIENT ------ \n\n-----  NOW IT'S TIME TO ENTER THE CLIENT DATA  ----- \n  CN = PERSONAL NUMBER\n OU = DIVISION\n O = USER\n\n\n"
